@@ -29,6 +29,8 @@ Once this is done, reload systemd:
 
 And start the services:
 
+.. code-block:: shell
+
     systemctl start reel2bits.target
 
 To ensure all reel2bits processes are started automatically on startup, run:
