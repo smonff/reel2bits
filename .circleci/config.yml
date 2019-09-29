@@ -31,7 +31,7 @@ aliases:
   - &install_audiowaveform
       run:
         name: Install audiowaveform
-        command: ./tests/install_audiowaveform.sh
+        command: ./api/tests/install_audiowaveform.sh
 
   - &install_python_dependencies
       steps:
@@ -41,19 +41,19 @@ aliases:
         - run: python -V | tee /tmp/.python-version
         - restore_cache:
             keys:
-              - v1-dependencies-{{ checksum "/tmp/.python-version" }}-{{ checksum "requirements.txt" }}
+              - v1-dependencies-{{ checksum "/tmp/.python-version" }}-{{ checksum "api/requirements.txt" }}
               - v1-dependencies-{{ checksum "/tmp/.python-version" }}-
               - v1-dependencies-
         - run: python3 -m venv venv
         - run:
             command: |
               . venv/bin/activate
-              pip install --requirement requirements.txt
+              pip install --requirement api/requirements.txt
               pip install black
               pip install flake8
               touch front/dist/index.html
         - save_cache:
-            key: v1-dependencies-{{ checksum "/tmp/.python-version" }}-{{ checksum "requirements.txt" }}
+            key: v1-dependencies-{{ checksum "/tmp/.python-version" }}-{{ checksum "api/requirements.txt" }}
             paths:
               - ./venv
         - *persist_to_workspace
@@ -85,13 +85,14 @@ aliases:
             name: Linters
             command: |
               . venv/bin/activate
+              cd api
               black --check .
               flake8 . --count --show-source --statistics
         - run:
             name: Tests
             command: |
               . venv/bin/activate
-              cp tests/config_test.py config.py
+              cd api
               mkdir test-reports
               export AUTHLIB_INSECURE_TRANSPORT=1
               python setup.py test
@@ -101,12 +102,12 @@ aliases:
               psql -U postgres -h localhost -w -c 'CREATE DATABASE reel2bits'
               psql -U postgres -h localhost -w -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' reel2bits
               . venv/bin/activate
-              cp config.py.sample config.py
+              cd api
               flask db upgrade
         - store_test_results:
-            path: test-reports
+            path: api/test-reports
         - store_artifacts:
-            path: test-reports
+            path: api/test-reports
 
   - &lint_steps_front
       steps:
@@ -160,16 +161,16 @@ aliases:
         - deploy:
             name: deploy front
             command: |
-              if [ "${CIRCLE_BRANCH}" = "frontv2" ]; then
+              if [ "${CIRCLE_BRANCH}" = "master" ]; then
                 rsync -avc -e "ssh -o StrictHostKeyChecking=no -p 23" --delete front/dist/ r2bdev@videaudio.cadance.licorn.eu:/
               else
-                echo "Not frontv2, no deployment"
+                echo "Not master, no deployment"
               fi
         - deploy:
             name: zip and sync artifacts
             command: |
               cd front
-              if [ "${CIRCLE_BRANCH}" = "frontv2" ]; then
+              if [ "${CIRCLE_BRANCH}" = "master" ]; then
                 export NAME="front-dist-${CIRCLE_BRANCH}"
                 zip -r "${NAME}.zip" dist/
                 rsync -avc -e "ssh -o StrictHostKeyChecking=no -p 22" ${NAME}.zip assets.reel2bits.org@cadance.licorn.eu:/
@@ -303,7 +304,7 @@ workflows:
       - build-develop-doc:
           filters:
             branches:
-              only: frontv2
+              only: master
   build-and-test:
     jobs:
       - install
@@ -341,3 +342,6 @@ workflows:
             - install
             - front-lint-lts
             - front-build
+          filters:
+            branches:
+              only: master

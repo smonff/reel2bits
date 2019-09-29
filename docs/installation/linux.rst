@@ -62,9 +62,9 @@ Still under your ``reel2bits`` user:
 .. code-block:: shell
 
     # if release:
-    git checkout -b v0.5 https://github.com/rhaamo/reel2bits/
+    git checkout -b v0.5 https://github.com/reel2bits/reel2bits/
     # Or master
-    git checkout https://github.com/rhaamo/reel2bits/
+    git checkout https://github.com/reel2bits/reel2bits/
 
 Python dependencies
 --------------------
@@ -102,8 +102,7 @@ Finally, install the python dependencies:
 .. code-block:: shell
 
     pip install wheel
-    pip install waitress
-    pip install -r requirements.txt
+    pip install -r api/requirements.txt
 
 .. warning::
 
@@ -114,13 +113,7 @@ Finally, install the python dependencies:
 Configuration file
 ------------------
 
-You can now start to configure reel2bits:
-
-.. code-block:: shell
-
-    cp config.py.sample config.py
-
-Then edit this file as you wish.
+Please look at :ref:`the dedicated configuration page <configuration-file>`.
 
 Sentry
 ------
@@ -140,6 +133,7 @@ You should now be able to import the initial database structure:
 
 .. code-block:: shell
 
+    # in the 'api' folder
     flask db upgrade
 
 This will create the required tables and rows.
@@ -153,6 +147,7 @@ Then populate the database with default values (seeds):
 
 .. code-block:: shell
 
+    # in the 'api' folder
     flask seed
 
 
@@ -163,6 +158,7 @@ You can then create your first user account:
 
 .. code-block:: shell
 
+    # in the 'api' folder
     flask createuser
 
 .. warning::
@@ -180,7 +176,7 @@ Pre-build
 ^^^^^^^^^
 
 - The URL for a stable release will be `https://assets.reel2bits.org/front-dist-master-v0.5.zip`.
-- The URL for master will be `https://assets.reel2bits.org/front-dist-master-.zip`.
+- The URL for master will be `https://assets.reel2bits.org/front-dist-master.zip`.
 
 You can always go to https://assets.reel2bits.org/ to check the available archives, and test the link before downloading it.
 
