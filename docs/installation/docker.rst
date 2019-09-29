@@ -3,9 +3,9 @@ Docker installation
 
 Docker is the easiest way to get a reel2bits instance up and running.
 
-We support one type of Docker deployments:
+We support one type of Docker deployment:
 
-- :ref:`Multi-container <docker-multi-container>`: each process lives in a dedicated container. This setup is more involved but also more flexible and scalable.
+- :ref:`Multi-container <docker-multi-container>`: each process lives in a dedicated container. This setup is more involving but also more flexible and scalable.
 
 .. note::
 
@@ -61,9 +61,7 @@ Create your env file:
 Ensure to edit it to match your needs (this file is heavily commented), in particular ``SECRET_KEY``, ``SECURITY_PASSWORD_SALT`` or ``REEL2BITS_HOSTNAME``.
 You should take a look at the `configuration reference <https://docs-develop.reel2bits.org/installation/configuration.html>`_ for more detailed information regarding each setting.
 
-Deploy a frontend build.
-
-According to your ``REEL2BITS_FRONTEND_PATH`` in ``.env``:
+Deploy a frontend build according to your ``REEL2BITS_FRONTEND_PATH`` in ``.env``:
 
 .. parsed-literal::
 
@@ -72,10 +70,10 @@ According to your ``REEL2BITS_FRONTEND_PATH`` in ``.env``:
 
     mkdir -p /srv/reel2bits/front/dist
 
-- The URL for a stable release will be `https://assets.reel2bits.org/front-dist-master-v0.5.zip`.
-- The URL for master will be `https://assets.reel2bits.org/front-dist-master.zip`.
+- The URL for a stable release will be ``https://assets.reel2bits.org/front-dist-master-v0.5.zip``.
+- The URL for master will be ``https://assets.reel2bits.org/front-dist-master.zip``.
 
-You can always go to https://assets.reel2bits.org/ to check the available archives, and test the link before downloading it.
+You can always go to `<https://assets.reel2bits.org/>`_ to check the available archives, and test the link before downloading it.
 
 .. parsed-literal::
 
@@ -93,7 +91,7 @@ Then, you should be able to pull the required images:
 
     docker-compose pull
 
-Run the database container and the initial migrations and database seeds:
+Run the database container, initial migrations and database seeds:
 
 .. code-block:: bash
 
