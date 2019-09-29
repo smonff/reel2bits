@@ -222,7 +222,7 @@ This is not needed unless you need to work on federation-related features.
 
 To achieve that, you'll need:
 
-1. to update your dns resolver to resolve all your .dev hostnames locally
+1. to update your dns resolver to resolve all your ``.dev`` hostnames locally
 2. a reverse proxy (such as traefik or nginx) to catch those .dev requests and
    and with https certificate
 3. two instances (or more) running locally, following the regular dev setup
